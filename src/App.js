@@ -1,11 +1,13 @@
 import Converter from "./components/Converter";
-import Icons from "./components/Icons";
+import Map from "./components/Map";
 import "./style.css";
 import "./components/compoStyle.css";
+import BackGround from "./components/BackGround";
 function App() {
   return (
     <div className="container">
-      <Icons />
+      <BackGround />
+      <Map />
       <Converter />
     </div>
   );
