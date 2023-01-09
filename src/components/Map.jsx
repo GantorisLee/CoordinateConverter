@@ -1,5 +1,5 @@
 import { Player } from "@lottiefiles/react-lottie-player";
-function Icons() {
+function Map() {
   return (
     <div className="map">
       <Player
@@ -12,4 +12,4 @@ function Icons() {
   );
 }
 
-export default Icons;
+export default Map;
