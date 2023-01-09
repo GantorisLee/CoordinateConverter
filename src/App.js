@@ -14,12 +14,12 @@ function App() {
         defaultActiveKey="1"
         items={[
           {
-            label: `Tab 1`,
+            label: `Main`,
             key: "1",
             children: <Converter />,
           },
           {
-            label: `Tab 2`,
+            label: `Two Way`,
             key: "2",
             children: <TwoWayConverter />,
           },
