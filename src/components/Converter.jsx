@@ -3,7 +3,7 @@ import { SVY21 } from "./formula";
 import { Button } from "antd";
 import {
   CaretRightOutlined,
-  CaretLeftOutlined,
+  // CaretLeftOutlined,
   DownloadOutlined,
   CopyOutlined,
 } from "@ant-design/icons";
@@ -26,6 +26,7 @@ function Converter() {
       .map((item) => item.replaceAll(/\s+/g, ""))
       .filter((e) => e !== "");
     let convertedLatlong = "";
+    let isInputCorrect = true;
     for (let row of multiRows) {
       const [label, east, north, RL] = row.split(",");
       // if (east === "" && north === "") continue;
@@ -34,36 +35,40 @@ function Converter() {
         alert(
           "Your input format is not correct, the format should be LABEL,NORTHING,EASTING,RL. e.g.(103,35375.333,32797.733,2.664)"
         );
+        break;
       }
       convertedLatlong += `${label} N${north} E${east} RL..${RL},${lat},${lon}\n`;
     }
-    setLatLong(convertedLatlong);
+    isInputCorrect && setLatLong(convertedLatlong);
   }
 
-  function latToEast(str) {
-    if (str === "") {
-      return;
-    }
-    const multiRows = str
-      .split("\n")
-      // .map((item) => item.replaceAll(/\s+/g, ""))
-      .filter((e) => e !== "");
-    let convertedEasNor = "";
-    for (let row of multiRows) {
-      console.log(row.split(" "));
-      const lat = row.split(",")[1];
-      const long = row.split(",")[2];
-      const { N, E } = Formula.computeSVY21(lat, long);
-      if (isNaN(N) && isNaN(E)) {
-        alert(
-          "Your input format is not correct, the format should be LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE. e.g.(103 N35375.333 E32797.733 RL..2.664,1.3128784785049925,103.899589588639)"
-        );
-      } else {
-        convertedEasNor += `${E},${N}\n`;
-      }
-    }
-    setEasNor(convertedEasNor);
-  }
+  // function latToEast(str) {
+  //   if (str === "") {
+  //     return;
+  //   }
+  //   const multiRows = str
+  //     .split("\n")
+  //     // .map((item) => item.replaceAll(/\s+/g, ""))
+  //     .filter((e) => e !== "");
+  //   let convertedEasNor = "";
+  //   let isInputCorrect = true;
+  //   for (let row of multiRows) {
+  //     console.log(row.split(" "));
+  //     const lat = row.split(",")[1];
+  //     const long = row.split(",")[2];
+  //     const { N, E } = Formula.computeSVY21(lat, long);
+  //     if (isNaN(N) && isNaN(E)) {
+  //       alert(
+  //         "Your input format is not correct, the format should be LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE. e.g.(103 N35375.333 E32797.733 RL..2.664,1.3128784785049925,103.899589588639)"
+  //       );
+  //       isInputCorrect = false;
+  //       break;
+  //     } else {
+  //       convertedEasNor += `${E},${N}\n`;
+  //     }
+  //   }
+  //   isInputCorrect && setEasNor(convertedEasNor);
+  // }
 
   function exportToCSV() {
     // const test = latLong;
@@ -71,8 +76,8 @@ function Converter() {
     // console.log(test.split(","));
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      "LABEL NORTHING EASTING RL LATITUDE LONGITUDE \n" +
-      latLong.split(",").join(" ");
+      "LABEL NORTHING EASTING RL,LATITUDE,LONGITUDE \n" +
+      latLong.split(",");
     const encodedUri = encodeURI(csvContent);
     window.open(encodedUri);
   }
@@ -110,7 +115,7 @@ function Converter() {
         <h2>LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE</h2>
         <TextArea
           rows={20}
-          placeholder="Enter rows of values in the format of 'LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE', e.g.(103 N35375.333 E32797.733 RL..2.664,1.3128784785049925,103.899589588639)"
+          // placeholder="Enter rows of values in the format of 'LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE', e.g.(103 N35375.333 E32797.733 RL..2.664,1.3128784785049925,103.899589588639)"
           allowClear="true"
           onChange={(e) => setLatLong(e.target.value)}
           value={latLong}

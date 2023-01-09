@@ -21,6 +21,17 @@
   position: relative;
 }
 
+.easNorTextArea_2 {
+  flex: 0.4;
+  min-width: 300px;
+}
+
+.latLonTextArea_2 {
+  flex: 0.4;
+  min-width: 300px;
+  /* position: relative; */
+}
+
 .latLonTextArea button {
   position: absolute;
   right: 0;
