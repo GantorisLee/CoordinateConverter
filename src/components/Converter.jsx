@@ -17,7 +17,6 @@ function Converter() {
   const [easNor, setEasNor] = useState("");
 
   function eastToLat(str) {
-    console.log(str);
     if (str === "") {
       return;
     }
@@ -28,7 +27,7 @@ function Converter() {
     let convertedLatlong = "";
     let isInputCorrect = true;
     for (let row of multiRows) {
-      const [label, east, north, RL] = row.split(",");
+      const [label, north, east, RL] = row.split(",");
       // if (east === "" && north === "") continue;
       const { lat, lon } = Formula.computeLatLon(north, east);
       if (isNaN(lat) && isNaN(lon)) {
