@@ -17,7 +17,6 @@ function TwoWayConverter() {
   const [easNor, setEasNor] = useState("");
 
   function eastToLat(str) {
-    console.log(str);
     if (str === "") {
       return;
     }

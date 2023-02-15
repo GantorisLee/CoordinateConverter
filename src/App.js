@@ -1,5 +1,5 @@
 import Converter from "./components/Converter";
-import Map from "./components/Map";
+import MapSVG from "./components/MapSVG";
 import "./style.css";
 import "./components/compoStyle.css";
 import BackGround from "./components/BackGround";
@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="container">
       <BackGround />
-      <Map />
+      <MapSVG />
       <Tabs
         defaultActiveKey="1"
         items={[

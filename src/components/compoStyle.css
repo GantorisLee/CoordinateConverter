@@ -2,32 +2,26 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  flex-basis: 100%;
 }
 
-/* .textArea {
-  flex: 0.3;
-  min-width: 300px;
-} */
-
 .easNorTextArea {
-  flex: 0.25;
+  flex-basis: 25%;
   min-width: 250px;
 }
 
 .latLonTextArea {
-  flex: 0.4;
+  flex-basis: 40%;
   min-width: 600px;
   position: relative;
 }
 
 .easNorTextArea_2 {
-  flex: 0.4;
+  flex-basis: 40%;
   min-width: 300px;
 }
 
 .latLonTextArea_2 {
-  flex: 0.4;
+  flex-basis: 40%;
   min-width: 300px;
   /* position: relative; */
 }
@@ -38,7 +32,7 @@
 }
 
 .butContainer {
-  flex: 0.1;
+  flex-basis: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,10 +48,13 @@
   /* margin-bottom: -10vh; */
 }
 
+.KMLButton {
+  margin-top: 4rem;
+}
+
 @media screen and (max-width: 800px) {
   .converter {
     flex-direction: column;
-    flex: 0.8;
   }
 
   .butContainer {
@@ -66,5 +63,11 @@
 
   .button {
     transform: rotate(90deg);
+  }
+
+  .KMLButton {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

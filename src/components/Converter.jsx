@@ -8,13 +8,17 @@ import {
   CopyOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
-
+import KMLGenerator from "./KMLGenerator";
+import Map from "./Map";
 const { TextArea } = Input;
 function Converter() {
   const Formula = new SVY21();
 
   const [latLong, setLatLong] = useState("");
   const [easNor, setEasNor] = useState("");
+
+  const [coordinates, setCoordinates] = useState([]);
+  const [isConverted, setIsConverted] = useState(false);
 
   function eastToLat(str) {
     if (str === "") {
@@ -24,8 +28,9 @@ function Converter() {
       .split("\n")
       .map((item) => item.replaceAll(/\s+/g, ""))
       .filter((e) => e !== "");
-    let convertedLatlong = "";
+    let convertedLatlng = "";
     let isInputCorrect = true;
+    let coordinates = [];
     for (let row of multiRows) {
       const [label, north, east, RL] = row.split(",");
       // if (east === "" && north === "") continue;
@@ -34,45 +39,18 @@ function Converter() {
         alert(
           "Your input format is not correct, the format should be LABEL,NORTHING,EASTING,RL. e.g.(103,35375.333,32797.733,2.664)"
         );
+        setIsConverted(false);
         break;
       }
-      convertedLatlong += `${label} N${north} E${east} RL..${RL},${lat},${lon}\n`;
+      convertedLatlng += `${label} N${north} E${east} RL..${RL},${lat},${lon}\n`;
+      coordinates.push({ lat: lat, lon: lon, north: north, east: east });
     }
-    isInputCorrect && setLatLong(convertedLatlong);
+    isInputCorrect && setLatLong(convertedLatlng);
+    setCoordinates(coordinates);
+    setIsConverted(true);
   }
 
-  // function latToEast(str) {
-  //   if (str === "") {
-  //     return;
-  //   }
-  //   const multiRows = str
-  //     .split("\n")
-  //     // .map((item) => item.replaceAll(/\s+/g, ""))
-  //     .filter((e) => e !== "");
-  //   let convertedEasNor = "";
-  //   let isInputCorrect = true;
-  //   for (let row of multiRows) {
-  //     console.log(row.split(" "));
-  //     const lat = row.split(",")[1];
-  //     const long = row.split(",")[2];
-  //     const { N, E } = Formula.computeSVY21(lat, long);
-  //     if (isNaN(N) && isNaN(E)) {
-  //       alert(
-  //         "Your input format is not correct, the format should be LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE. e.g.(103 N35375.333 E32797.733 RL..2.664,1.3128784785049925,103.899589588639)"
-  //       );
-  //       isInputCorrect = false;
-  //       break;
-  //     } else {
-  //       convertedEasNor += `${E},${N}\n`;
-  //     }
-  //   }
-  //   isInputCorrect && setEasNor(convertedEasNor);
-  // }
-
   function exportToCSV() {
-    // const test = latLong;
-    // console.log(test);
-    // console.log(test.split(","));
     const csvContent =
       "data:text/csv;charset=utf-8," +
       "LABEL NORTHING EASTING RL,LATITUDE,LONGITUDE \n" +
@@ -102,13 +80,6 @@ function Converter() {
           size={"large"}
           onClick={() => eastToLat(easNor)}
         />
-        {/* <Button
-          className="button"
-          type="primary"
-          icon={<CaretLeftOutlined />}
-          size={"large"}
-          onClick={() => latToEast(latLong)}
-        /> */}
       </div>
       <div className="latLonTextArea">
         <h2>LABEL,NORTHING,EASTING,RL,LATITUDE,LONGITUDE</h2>
@@ -120,17 +91,25 @@ function Converter() {
           value={latLong}
         />
         <CopyOutlined onClick={() => navigator.clipboard.writeText(latLong)} />
-        {latLong !== "" && (
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            size={"large"}
-            onClick={exportToCSV}
-          >
-            Export as CSV
-          </Button>
-        )}
+
+        <Button
+          type="primary"
+          icon={<DownloadOutlined />}
+          size={"large"}
+          onClick={exportToCSV}
+          disabled={!latLong}
+        >
+          Export as CSV
+        </Button>
       </div>
+
+      <KMLGenerator coordinates={coordinates} isConverted={isConverted} />
+      <Map
+        center={{ lat: 40.712776, lng: -74.005974 }}
+        zoom={10}
+        locations={coordinates}
+        isConverted={isConverted}
+      />
     </div>
   );
 }
