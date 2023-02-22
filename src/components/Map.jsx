@@ -2,7 +2,7 @@ import GoogleMapReact from "google-map-react";
 
 const Map = ({ zoom, locations, isConverted }) => {
   const markers = locations.map((location, index) => (
-    <Marker key={index} lat={location.lat} lng={location.lng} />
+    <Marker key={index} lat={location.lat} lng={location.lon} />
   ));
 
   return (
