@@ -33,6 +33,7 @@ function Converter() {
     let coordinates = [];
     for (let row of multiRows) {
       const [label, north, east, RL] = row.split(",");
+      console.log("RL: ", RL);
       // if (east === "" && north === "") continue;
       const { lat, lon } = Formula.computeLatLon(north, east);
       if (isNaN(lat) && isNaN(lon)) {
@@ -51,6 +52,7 @@ function Converter() {
         label: label,
         lat: lat,
         lon: lon,
+        RL: RL,
         north: north,
         east: east,
       });
