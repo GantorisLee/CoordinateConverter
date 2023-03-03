@@ -30,7 +30,16 @@ export default function KMLGenerator({ coordinates, isConverted }) {
       "      </IconStyle>\n" +
       "    </Style>\n";
     coordinates.forEach((coordinate, index) => {
-      const name = `${index + 1} N${coordinate.north} E${coordinate.east}`;
+      // const name = `${index + 1} N${coordinate.north} E${coordinate.east}`;
+
+      // const name = `${coordinate.label} N${coordinate.north} E${coordinate.east} RL..${coordinate.lat}, ${coordinate.lon}\n`;
+      console.log(coordinate.RL);
+      let name;
+      if (coordinate.RL) {
+        name = `${coordinate.label} N${coordinate.north} E${coordinate.east} RL..${coordinate.RL}\n`;
+      } else {
+        name = `${coordinate.label} N${coordinate.north} E${coordinate.east} \n`;
+      }
       const description = `<![CDATA[LATITUDE: ${coordinate.lat}<br>LONGITUDE: ${coordinate.lon}]]>`;
       const latitudeData = `        <Data name="LATITUDE">\n          <value>${coordinate.lat}</value>\n        </Data>\n`;
       const longitudeData = `        <Data name="LONGITUDE">\n          <value>${coordinate.lon}</value>\n        </Data>\n`;

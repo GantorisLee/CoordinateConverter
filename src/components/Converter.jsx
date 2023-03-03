@@ -42,8 +42,18 @@ function Converter() {
         setIsConverted(false);
         break;
       }
-      convertedLatlng += `${label} N${north} E${east} RL..${RL},${lat},${lon}\n`;
-      coordinates.push({ lat: lat, lon: lon, north: north, east: east });
+      convertedLatlng += RL
+        ? `${label} N${north} E${east} RL..${RL},${lat},${lon}\n`
+        : `${label} N${north} E${east} ${lat},${lon}\n`;
+
+      // convertedLatlng += `${label} N${north} E${east} RL..${RL},${lat},${lon}\n`;
+      coordinates.push({
+        label: label,
+        lat: lat,
+        lon: lon,
+        north: north,
+        east: east,
+      });
     }
     isInputCorrect && setLatLong(convertedLatlng);
     setCoordinates(coordinates);
