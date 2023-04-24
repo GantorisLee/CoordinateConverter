@@ -1,5 +1,5 @@
 import { Button } from "antd";
-export default function KMLGenerator({ coordinates, isConverted }) {
+export default function KMLGenerator({ coordinates, isConverted, fileRef }) {
   const handleDownload = () => {
     console.log(coordinates);
     const kml = generateKML(coordinates);
@@ -8,7 +8,7 @@ export default function KMLGenerator({ coordinates, isConverted }) {
     });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = "coordinates.kml";
+    link.download = fileRef + ".kml";
     link.href = url;
     link.click();
   };
@@ -18,7 +18,7 @@ export default function KMLGenerator({ coordinates, isConverted }) {
       '<?xml version="1.0" encoding="UTF-8"?>\n' +
       '<kml xmlns="http://www.opengis.net/kml/2.2">\n' +
       "  <Document>\n" +
-      "    <name>Coordinates</name>\n" +
+      `    <name>${fileRef}</name>\n` +
       "    <Style id='icon-1899-0288D1-labelson'>\n" +
       "      <IconStyle>\n" +
       "        <color>ffd18802</color>\n" +

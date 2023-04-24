@@ -20,6 +20,8 @@ function Converter() {
   const [coordinates, setCoordinates] = useState([]);
   const [isConverted, setIsConverted] = useState(false);
 
+  const [fileRef, setFileRef] = useState("");
+
   function eastToLat(str) {
     if (str === "") {
       return;
@@ -68,7 +70,20 @@ function Converter() {
       "LABEL NORTHING EASTING RL,LATITUDE,LONGITUDE \n" +
       latLong.split(",");
     const encodedUri = encodeURI(csvContent);
-    window.open(encodedUri);
+    // window.open(encodedUri);
+    const fileName = fileRef; // Set your desired file name here
+
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function onChange(e) {
+    // console.log(e.target.value);
+    setFileRef(e.target.value);
   }
 
   return (
@@ -103,7 +118,10 @@ function Converter() {
           value={latLong}
         />
         <CopyOutlined onClick={() => navigator.clipboard.writeText(latLong)} />
-
+      </div>
+      <div className="fileRefContainer">
+        <span className="fileRef">File Ref: </span>
+        <Input className="fileRefInput" onChange={onChange} />
         <Button
           type="primary"
           icon={<DownloadOutlined />}
@@ -114,8 +132,11 @@ function Converter() {
           Export as CSV
         </Button>
       </div>
-
-      <KMLGenerator coordinates={coordinates} isConverted={isConverted} />
+      <KMLGenerator
+        coordinates={coordinates}
+        isConverted={isConverted}
+        fileRef={fileRef}
+      />
       <Map
         center={{ lat: 40.712776, lng: -74.005974 }}
         zoom={10}
